@@ -229,8 +229,10 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 				// Calculating weight.
 				double dX = obsX - landmarkX;
 				double dY = obsY - landmarkY;
-
-				double weight = (1 / (0.5 * M_PI * std_x * std_y)) * exp(-(dX * dX / (0.5 * std_x * std_y) + (dY * dY / (0.5 * std_y * std_y))));
+				double multiplier = 1 / (0.5 * M_PI * std_x * std_y);
+				double divider = 0.5 * std_x * std_y;
+				double divider2 = 0.5 * pow(std_y, 2);
+				double weight = multiplier * exp(-(dX * dX / divider + (dY * dY / divider2)));
 				if (weight == 0)
 				{
 					particles[i].weight *= EPS;
